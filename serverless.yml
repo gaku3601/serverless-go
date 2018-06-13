@@ -26,15 +26,24 @@ package:
    - ./bin/**
 
 functions:
+  show:
+    handler: bin/show
+    events:
+      - http:
+          path: func/{id}
+          method: get
+          # cognito認証を実施する場合、対象cognitoのarnを指定
+          #authorizer:
+          #  arn: arn:aws:cognito-idp:ap-northeast-1:982976011432:userpool/ap-northeast-1_xerpEI3kg
+    environment:
+      DYNAMO_DATA_TABLE:
+        Ref: DynamoDataTable
   create:
     handler: bin/create
     events:
       - http:
           path: func
           method: post
-          # cognito認証を実施する場合、対象cognitoのarnを指定
-          #authorizer:
-          #  arn: arn:aws:cognito-idp:ap-northeast-1:982976011432:userpool/ap-northeast-1_xerpEI3kg
     environment:
       DYNAMO_DATA_TABLE:
         Ref: DynamoDataTable

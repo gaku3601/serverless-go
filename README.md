@@ -6,6 +6,7 @@
 ## deploy
 
     GOOS=linux go build -o bin/create ./func/create
+    GOOS=linux go build -o bin/show ./func/show
     sls deploy
 
 ## stage切り替え
