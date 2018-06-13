@@ -10,22 +10,14 @@ provider:
   stage: ${opt:stage, self:custom.defaultStage}
   region: ap-northeast-1
 # 権限設定
-#  iamRoleStatements:
-#    - Effect: Allow
-#      Action:
-#        - dynamodb:*
-#      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
 
 custom:
   defaultStage: dev
-#  table:
-#    dev:
-#      dataTable: dev-datatable
-#    prod:
-#      dataTable: prod-datatable
 
 package:
  exclude:
@@ -43,25 +35,25 @@ functions:
           # cognito認証を実施する場合、対象cognitoのarnを指定
           #authorizer:
           #  arn: arn:aws:cognito-idp:ap-northeast-1:982976011432:userpool/ap-northeast-1_xerpEI3kg
-    #environment:
-    #  DATATABLE: ${self:custom.table.${self:provider.stage}.dataTable}
+    environment:
+      DYNAMODATATABLE:
+        Ref: DynamoDataTable
 
 # dynamoDB Create処理
-#resources:
-#  Resources:
-#    DynamoDataTable:
-#      Type: 'AWS::DynamoDB::Table'
-#      #DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
-#          -
-#            AttributeName: id
-#            AttributeType: S
-#        KeySchema:
-#          -
-#            AttributeName: id
-#            KeyType: HASH
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: ${self:custom.table.${self:provider.stage}.dataTable}
+resources:
+  Resources:
+    DynamoDataTable:
+      Type: 'AWS::DynamoDB::Table'
+      #DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
