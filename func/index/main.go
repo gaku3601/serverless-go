@@ -25,8 +25,8 @@ type Data struct {
 }
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	//startID := request.QueryStringParameters["start"]
-	//endID := request.QueryStringParameters["end"]
+	startID := request.QueryStringParameters["start"]
+	endID := request.QueryStringParameters["end"]
 	sess, err := session.NewSession()
 	if err != nil {
 		panic(err)
@@ -42,10 +42,10 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		},
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":startKey": {
-				N: aws.String("1"),
+				N: &startID,
 			},
 			":endKey": {
-				N: aws.String("10"),
+				N: &endID,
 			},
 		},
 	}

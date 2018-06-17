@@ -20,4 +20,7 @@
 
 # curlコマンド
 
+    [create]
     curl -X POST -H 'Content-Type:application/json' -d '{"title":"val"}' <URL>
+    [index]
+    curl -X GET <URL>?start=1\&end=10
