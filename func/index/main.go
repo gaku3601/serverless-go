@@ -31,7 +31,16 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	svc := dynamodb.New(sess)
 	params := &dynamodb.ScanInput{
-		TableName: aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
+		TableName:        aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
+		FilterExpression: aws.String("#key = :key"),
+		ExpressionAttributeNames: map[string]*string{
+			"#key": aws.String("ID"), // 項目名をプレースホルダに入れる
+		},
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":key": {
+				N: aws.String("3"), // 値をプレースホルダに入れる
+			},
+		},
 	}
 	resp, err := svc.Scan(params)
 	if err != nil {
