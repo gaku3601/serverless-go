@@ -19,11 +19,14 @@ type Response struct {
 }
 
 type Data struct {
-	ID    int
-	Title string
+	ID         int
+	Title      string
+	CreateDate string
 }
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	//startID := request.QueryStringParameters["start"]
+	//endID := request.QueryStringParameters["end"]
 	sess, err := session.NewSession()
 	if err != nil {
 		panic(err)
@@ -31,14 +34,18 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	svc := dynamodb.New(sess)
 	params := &dynamodb.ScanInput{
-		TableName:        aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
-		FilterExpression: aws.String("#key = :key"),
+		TableName:            aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
+		ProjectionExpression: aws.String("ID, Title, CreateDate"),
+		FilterExpression:     aws.String("#key BETWEEN :startKey AND :endKey"),
 		ExpressionAttributeNames: map[string]*string{
 			"#key": aws.String("ID"), // 項目名をプレースホルダに入れる
 		},
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
-			":key": {
-				N: aws.String("3"), // 値をプレースホルダに入れる
+			":startKey": {
+				N: aws.String("1"),
+			},
+			":endKey": {
+				N: aws.String("10"),
 			},
 		},
 	}
