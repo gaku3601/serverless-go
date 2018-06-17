@@ -26,6 +26,17 @@ package:
    - ./bin/**
 
 functions:
+  index:
+    handler: bin/index
+    events:
+      - http:
+          path: func
+          method: get
+    environment:
+      DYNAMO_DATA_TABLE:
+        Ref: DynamoDataTable
+      SEQUENCE_TABLE:
+        Ref: SequenceTable
   show:
     handler: bin/show
     events:
