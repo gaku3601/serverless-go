@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/rs/xid"
 	"github.com/tidwall/gjson"
 )
 
@@ -18,9 +17,33 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+func updateSequence(svc *dynamodb.DynamoDB, tableName string) *string {
+	putParams := &dynamodb.UpdateItemInput{
+		TableName: aws.String(os.Getenv("SEQUENCE_TABLE")),
+		Key: map[string]*dynamodb.AttributeValue{
+			"TableName": {
+				S: aws.String(tableName),
+			},
+		},
+		AttributeUpdates: map[string]*dynamodb.AttributeValueUpdate{
+			"CurrentNumber": {
+				Value: &dynamodb.AttributeValue{
+					N: aws.String("1"),
+				},
+				Action: aws.String("ADD"),
+			},
+		},
+		// 返却内容を記載するのを忘れない！！！！
+		ReturnValues: aws.String("UPDATED_NEW"),
+	}
+	putItem, putErr := svc.UpdateItem(putParams)
+	if putErr != nil {
+		panic(fmt.Sprintf("error:%#v", putErr))
+	}
+	return putItem.Attributes["CurrentNumber"].N
+}
+
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// 一意なidを生成
-	guid := xid.New()
 	// 作成時間を取得
 	jst, _ := time.LoadLocation("Asia/Tokyo")
 	t := time.Now().In(jst)
@@ -35,20 +58,18 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	svc := dynamodb.New(sess)
+	id := updateSequence(svc, os.Getenv("SEQUENCE_TABLE"))
 
 	putParams := &dynamodb.PutItemInput{
 		TableName: aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
 		Item: map[string]*dynamodb.AttributeValue{
 			"ID": {
-				S: aws.String(guid.String()),
+				N: id,
 			},
 			"Title": {
 				S: aws.String(title),
 			},
 			"CreateDate": {
-				S: aws.String(lt),
-			},
-			"UpdateDate": {
 				S: aws.String(lt),
 			},
 		},
@@ -60,7 +81,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("Insert DynamoDB: ID: %v, Title: %v , CreateDate: %v UpdateDate: %v \n", guid.String(), title, lt, lt),
+		Body:       fmt.Sprintf("[Insert DynamoDB] ID: %v, Title: %v, CreateDate: %v \n", *id, title, lt),
 		StatusCode: 200,
 	}, nil
 }
