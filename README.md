@@ -9,6 +9,7 @@
     GOOS=linux go build -o bin/show ./func/show
     GOOS=linux go build -o bin/index ./func/index
     GOOS=linux go build -o bin/update ./func/update
+    GOOS=linux go build -o bin/destroy ./func/destroy
     sls deploy
 
 ## stage切り替え
@@ -25,3 +26,7 @@
     curl -X POST -H 'Content-Type:application/json' -d '{"title":"val"}' <URL>
     [index]
     curl -X GET <URL>?start=1\&end=10
+    [update]
+    curl -X PATCH -H 'Content-Type:application/json' -d '{"title":"val4"}' <URL>/{id}
+    [destroy]
+    curl -X DELETE <URL>/{id}

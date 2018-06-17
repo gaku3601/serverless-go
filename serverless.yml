@@ -71,6 +71,17 @@ functions:
         Ref: DynamoDataTable
       SEQUENCE_TABLE:
         Ref: SequenceTable
+  destroy:
+    handler: bin/destroy
+    events:
+      - http:
+          path: func/{id}
+          method: delete
+    environment:
+      DYNAMO_DATA_TABLE:
+        Ref: DynamoDataTable
+      SEQUENCE_TABLE:
+        Ref: SequenceTable
 
 # dynamoDB Create処理
 resources:
