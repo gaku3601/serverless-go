@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
 type Response struct {
@@ -30,7 +32,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		TableName: aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
 		Key: map[string]*dynamodb.AttributeValue{
 			"ID": {
-				S: aws.String(id),
+				N: aws.String(id),
 			},
 		},
 		AttributesToGet: []*string{
@@ -46,9 +48,17 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	type Obj struct {
+		ID    string
+		Title string
+	}
+
+	obj := Obj{}
+	dynamodbattribute.UnmarshalMap(resp.Item, &obj)
+	j, _ := json.Marshal(obj)
 
 	return events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("ID: %v Title: %v", *resp.Item["ID"].S, *resp.Item["Title"].S),
+		Body:       fmt.Sprintf("%v", string(j)),
 		StatusCode: 200,
 	}, nil
 }
