@@ -43,6 +43,7 @@
     "private/protocol/rest",
     "private/protocol/xml/xmlutil",
     "service/dynamodb",
+    "service/dynamodb/dynamodbattribute",
     "service/sts"
   ]
   revision = "92c96c4f5ad419f2a72401c2f606d51e010cc110"
@@ -60,12 +61,6 @@
   revision = "0b12d6b5"
 
 [[projects]]
-  name = "github.com/rs/xid"
-  packages = ["."]
-  revision = "2c7e97ce663ff82c49656bca3048df0fdd83c5f9"
-  version = "v1.2.0"
-
-[[projects]]
   name = "github.com/tidwall/gjson"
   packages = ["."]
   revision = "afaeb9562041a8018c74e006551143666aed08bf"
@@ -77,18 +72,9 @@
   packages = ["."]
   revision = "1731857f09b1f38450e2c12409748407822dc6be"
 
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
-  revision = "56ede360ec1c541828fb88741b3f1049406d28f5"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5d9b6a90f8666409d975ba102aacb25578ac78a43cfb444e27c640c7f7d6f383"
+  inputs-digest = "7d8fdb758904322a197e842745cf77c0fedcee3968f1b8cf96cb1215496f4d22"
   solver-name = "gps-cdcl"
   solver-version = 1

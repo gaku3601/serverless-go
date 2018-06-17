@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/tidwall/gjson"
 )
 
@@ -49,9 +51,15 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if putErr != nil {
 		panic(fmt.Sprintf("error:%#v", putErr))
 	}
+	type Obj struct {
+		Title string
+	}
+	obj := Obj{}
+	dynamodbattribute.UnmarshalMap(putItem.Attributes, &obj)
+	j, _ := json.Marshal(obj)
 
 	return events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("%#v", putItem),
+		Body:       fmt.Sprintf("%v", string(j)),
 		StatusCode: 200,
 	}, nil
 }
