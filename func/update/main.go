@@ -14,10 +14,6 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	id := request.PathParameters["id"]
 

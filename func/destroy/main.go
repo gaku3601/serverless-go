@@ -11,10 +11,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	id := request.PathParameters["id"]
 

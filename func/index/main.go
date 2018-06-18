@@ -14,10 +14,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 type Data struct {
 	ID         int
 	Title      string

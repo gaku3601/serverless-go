@@ -13,10 +13,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// クエリパラメータの場合
 	//id := request.QueryStringParameters["id"]

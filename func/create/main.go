@@ -13,10 +13,6 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 func updateSequence(svc *dynamodb.DynamoDB, tableName string) *string {
 	putParams := &dynamodb.UpdateItemInput{
 		TableName: aws.String(os.Getenv("SEQUENCE_TABLE")),
