@@ -43,7 +43,6 @@
     "private/protocol/rest",
     "private/protocol/xml/xmlutil",
     "service/dynamodb",
-    "service/dynamodb/dynamodbattribute",
     "service/sts"
   ]
   revision = "92c96c4f5ad419f2a72401c2f606d51e010cc110"
@@ -60,21 +59,9 @@
   packages = ["."]
   revision = "0b12d6b5"
 
-[[projects]]
-  name = "github.com/tidwall/gjson"
-  packages = ["."]
-  revision = "afaeb9562041a8018c74e006551143666aed08bf"
-  version = "v1.1.1"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/tidwall/match"
-  packages = ["."]
-  revision = "1731857f09b1f38450e2c12409748407822dc6be"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7d8fdb758904322a197e842745cf77c0fedcee3968f1b8cf96cb1215496f4d22"
+  inputs-digest = "f965f00fde683957ab21618ac0ee1ef99d52069342e7e65bdc1fe5c6cbdc118c"
   solver-name = "gps-cdcl"
   solver-version = 1

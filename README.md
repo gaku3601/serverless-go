@@ -5,20 +5,11 @@
 
 ## deploy
 
-    GOOS=linux go build -o bin/create ./func/create
-    GOOS=linux go build -o bin/show ./func/show
-    GOOS=linux go build -o bin/index ./func/index
-    GOOS=linux go build -o bin/update ./func/update
-    GOOS=linux go build -o bin/destroy ./func/destroy
-    sls deploy
+    make deploy
 
-## stage切り替え
+## deploy production
 
-    sls deploy --stage prod
-
-## stack削除
-
-    serverless remove -v
+    make prod-deploy
 
 # curlコマンド
 
