@@ -57,7 +57,11 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	j, _ := json.Marshal(obj)
 
 	return events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("%v", string(j)),
+		Body: fmt.Sprintf("%v", string(j)),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+		},
 		StatusCode: 200,
 	}, nil
 }

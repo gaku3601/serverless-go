@@ -79,6 +79,10 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		Body:       fmt.Sprintf("[Insert DynamoDB] ID: %v, Title: %v, CreateDate: %v \n", *id, title, lt),
 		StatusCode: 200,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+		},
 	}, nil
 }
 

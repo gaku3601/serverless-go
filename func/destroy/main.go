@@ -38,7 +38,11 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		panic(fmt.Sprintf("error:%#v", err))
 	}
 	return events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("Delete Success"),
+		Body: fmt.Sprintf("Delete Success"),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+		},
 		StatusCode: 200,
 	}, nil
 }
