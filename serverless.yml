@@ -39,7 +39,7 @@ functions:
       SEQUENCE_TABLE:
         Ref: SequenceTable
   show:
-    handler: bin/show
+    handler: bin/create
     events:
       - http:
           path: func/{id}

@@ -13,5 +13,5 @@ func main() {
 	svc := dynamodb.New(session.New(), &aws.Config{})
 	d := dynamo.NewDynamoModel(svc)
 	h := handler.NewHandler(d)
-	lambda.Start(h.CreateData)
+	lambda.Start(h.Router)
 }

@@ -1,17 +1,20 @@
 package dynamo
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
 type (
 	DynamoModel interface {
 		Create(title string)
+		Show(id string) string
 		UpdateSequence(svc *dynamodb.DynamoDB, tableName string) *string
 	}
 
@@ -77,4 +80,36 @@ func (d *dynamoModel) UpdateSequence(svc *dynamodb.DynamoDB, tableName string) *
 		panic(fmt.Sprintf("error:%#v", putErr))
 	}
 	return putItem.Attributes["CurrentNumber"].N
+}
+
+func (d *dynamoModel) Show(id string) string {
+	params := &dynamodb.GetItemInput{
+		TableName: aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
+		Key: map[string]*dynamodb.AttributeValue{
+			"ID": {
+				N: aws.String(id),
+			},
+		},
+		AttributesToGet: []*string{
+			aws.String("ID"),
+			aws.String("Title"),
+		},
+		ConsistentRead:         aws.Bool(true),
+		ReturnConsumedCapacity: aws.String("NONE"),
+	}
+
+	resp, err := d.svc.GetItem(params)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	type Obj struct {
+		ID    string
+		Title string
+	}
+
+	obj := Obj{}
+	dynamodbattribute.UnmarshalMap(resp.Item, &obj)
+	j, _ := json.Marshal(obj)
+	return string(j)
 }

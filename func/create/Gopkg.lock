@@ -43,6 +43,7 @@
     "private/protocol/rest",
     "private/protocol/xml/xmlutil",
     "service/dynamodb",
+    "service/dynamodb/dynamodbattribute",
     "service/sts"
   ]
   revision = "92c96c4f5ad419f2a72401c2f606d51e010cc110"
@@ -74,6 +75,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0f61876ee2dca19e5367802444f507934c01da6507d55b73240c195eb8ab9861"
+  inputs-digest = "7d8fdb758904322a197e842745cf77c0fedcee3968f1b8cf96cb1215496f4d22"
   solver-name = "gps-cdcl"
   solver-version = 1

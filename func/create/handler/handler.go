@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/gaku3601/serverless-go/func/create/dynamo"
+	"github.com/gaku3601/serverless-go/func/create/gombda"
 	"github.com/tidwall/gjson"
 )
 
@@ -18,7 +19,15 @@ func NewHandler(d dynamo.DynamoModel) handler {
 	return handler{d}
 }
 
-func (h handler) CreateData(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func (h handler) Router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	g := gombda.New(request)
+	g.POST("/func", h.Create)
+	g.GET("/func/{id}", h.Show)
+
+	return g.Start()
+}
+
+func (h handler) Create(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// jsonの値を取得
 	title := gjson.Get(request.Body, "title").String()
 	h.dynamoModel.Create(title)
@@ -30,5 +39,19 @@ func (h handler) CreateData(request events.APIGatewayProxyRequest) (events.APIGa
 			"Access-Control-Allow-Origin":      "*",
 			"Access-Control-Allow-Credentials": "true",
 		},
+	}, nil
+}
+
+func (h handler) Show(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	id := request.PathParameters["id"]
+	j := h.dynamoModel.Show(id)
+
+	return events.APIGatewayProxyResponse{
+		Body: fmt.Sprintf("%v", string(j)),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+		},
+		StatusCode: 200,
 	}, nil
 }
