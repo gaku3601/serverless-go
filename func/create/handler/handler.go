@@ -25,6 +25,7 @@ func (h handler) Router(request events.APIGatewayProxyRequest) (events.APIGatewa
 	g.GET("/func/{id}", h.Show)
 	g.DELETE("/func/{id}", h.Destroy)
 	g.PATCH("/func/{id}", h.Update)
+	g.GET("/func", h.Index)
 
 	return g.Start()
 }
@@ -78,6 +79,20 @@ func (h handler) Update(request events.APIGatewayProxyRequest) (events.APIGatewa
 	// jsonの値を取得
 	title := gjson.Get(request.Body, "title").String()
 	j := h.dynamoModel.Update(id, title)
+
+	return events.APIGatewayProxyResponse{
+		Body: fmt.Sprintf("%v", string(j)),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+		},
+		StatusCode: 200,
+	}, nil
+}
+func (h handler) Index(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	startID := request.QueryStringParameters["start"]
+	endID := request.QueryStringParameters["end"]
+	j := h.dynamoModel.Index(startID, endID)
 
 	return events.APIGatewayProxyResponse{
 		Body: fmt.Sprintf("%v", string(j)),

@@ -27,7 +27,7 @@ package:
 
 functions:
   index:
-    handler: bin/index
+    handler: bin/create
     events:
       - http:
           path: func
