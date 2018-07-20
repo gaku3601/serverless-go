@@ -1,6 +1,6 @@
 build:
-	cd ./func/create && dep ensure	
-	GOOS=linux go build -o bin/create ./func/create
+	cd ./func && dep ensure	
+	GOOS=linux go build -o bin/lambda ./func
 deploy:
 	@make build
 	sls deploy

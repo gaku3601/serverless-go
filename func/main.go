@@ -5,8 +5,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/gaku3601/serverless-go/func/create/dynamo"
-	"github.com/gaku3601/serverless-go/func/create/handler"
+	"github.com/gaku3601/serverless-go/func/dynamo"
+	"github.com/gaku3601/serverless-go/func/handler"
 )
 
 func main() {

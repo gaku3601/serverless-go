@@ -21,3 +21,5 @@
     curl -X PATCH -H 'Content-Type:application/json' -d '{"title":"val4"}' <URL>/{id}
     [destroy]
     curl -X DELETE <URL>/{id}
+    [show]
+    curl -X GET <URL>/{id}

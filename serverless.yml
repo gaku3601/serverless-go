@@ -27,7 +27,7 @@ package:
 
 functions:
   index:
-    handler: bin/create
+    handler: bin/lambda
     events:
       - http:
           path: func
@@ -39,7 +39,7 @@ functions:
       SEQUENCE_TABLE:
         Ref: SequenceTable
   show:
-    handler: bin/create
+    handler: bin/lambda
     events:
       - http:
           path: func/{id}
@@ -52,7 +52,7 @@ functions:
       DYNAMO_DATA_TABLE:
         Ref: DynamoDataTable
   create:
-    handler: bin/create
+    handler: bin/lambda
     events:
       - http:
           path: func
@@ -64,7 +64,7 @@ functions:
       SEQUENCE_TABLE:
         Ref: SequenceTable
   update:
-    handler: bin/create
+    handler: bin/lambda
     events:
       - http:
           path: func/{id}
@@ -76,7 +76,7 @@ functions:
       SEQUENCE_TABLE:
         Ref: SequenceTable
   destroy:
-    handler: bin/create
+    handler: bin/lambda
     events:
       - http:
           path: func/{id}
