@@ -21,11 +21,11 @@ func NewHandler(d dynamo.DynamoModel) handler {
 
 func (h handler) Router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	g := gombda.New(request)
-	g.POST("/func", h.Create)
-	g.GET("/func/{id}", h.Show)
-	g.DELETE("/func/{id}", h.Destroy)
-	g.PATCH("/func/{id}", h.Update)
-	g.GET("/func", h.Index)
+	g.POST("/", h.Create)
+	g.GET("/{id}", h.Show)
+	g.DELETE("/{id}", h.Destroy)
+	g.PATCH("/{id}", h.Update)
+	g.GET("/", h.Index)
 
 	return g.Start()
 }

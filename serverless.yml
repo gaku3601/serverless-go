@@ -30,7 +30,7 @@ functions:
     handler: bin/lambda
     events:
       - http:
-          path: func
+          path: /
           method: get
           cors: true
     environment:
@@ -42,7 +42,7 @@ functions:
     handler: bin/lambda
     events:
       - http:
-          path: func/{id}
+          path: /{id}
           method: get
           cors: true
           # cognito認証を実施する場合、対象cognitoのarnを指定
@@ -55,7 +55,7 @@ functions:
     handler: bin/lambda
     events:
       - http:
-          path: func
+          path: /
           method: post
           cors: true
     environment:
@@ -67,7 +67,7 @@ functions:
     handler: bin/lambda
     events:
       - http:
-          path: func/{id}
+          path: /{id}
           method: patch
           cors: true
     environment:
@@ -79,7 +79,7 @@ functions:
     handler: bin/lambda
     events:
       - http:
-          path: func/{id}
+          path: /{id}
           method: delete
           cors: true
     environment:
