@@ -64,7 +64,7 @@ functions:
       SEQUENCE_TABLE:
         Ref: SequenceTable
   update:
-    handler: bin/update
+    handler: bin/create
     events:
       - http:
           path: func/{id}

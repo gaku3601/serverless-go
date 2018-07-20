@@ -16,6 +16,7 @@ type (
 		Create(title string)
 		Show(id string) string
 		Destroy(id string)
+		Update(id string, title string) string
 		UpdateSequence(svc *dynamodb.DynamoDB, tableName string) *string
 	}
 
@@ -133,4 +134,36 @@ func (d *dynamoModel) Destroy(id string) {
 	if err != nil {
 		panic(fmt.Sprintf("error:%#v", err))
 	}
+}
+
+func (d *dynamoModel) Update(id string, title string) string {
+	putParams := &dynamodb.UpdateItemInput{
+		TableName: aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
+		Key: map[string]*dynamodb.AttributeValue{
+			"ID": {
+				N: aws.String(id),
+			},
+		},
+		AttributeUpdates: map[string]*dynamodb.AttributeValueUpdate{
+			"Title": {
+				Value: &dynamodb.AttributeValue{
+					S: aws.String(title),
+				},
+			},
+		},
+		// 返却内容を記載するのを忘れない！！！！
+		ReturnValues: aws.String("UPDATED_NEW"),
+	}
+
+	putItem, putErr := d.svc.UpdateItem(putParams)
+	if putErr != nil {
+		panic(fmt.Sprintf("error:%#v", putErr))
+	}
+	type Obj struct {
+		Title string
+	}
+	obj := Obj{}
+	dynamodbattribute.UnmarshalMap(putItem.Attributes, &obj)
+	j, _ := json.Marshal(obj)
+	return string(j)
 }
