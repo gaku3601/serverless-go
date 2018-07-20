@@ -76,7 +76,7 @@ functions:
       SEQUENCE_TABLE:
         Ref: SequenceTable
   destroy:
-    handler: bin/destroy
+    handler: bin/create
     events:
       - http:
           path: func/{id}

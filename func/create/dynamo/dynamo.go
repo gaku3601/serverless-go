@@ -15,6 +15,7 @@ type (
 	DynamoModel interface {
 		Create(title string)
 		Show(id string) string
+		Destroy(id string)
 		UpdateSequence(svc *dynamodb.DynamoDB, tableName string) *string
 	}
 
@@ -112,4 +113,24 @@ func (d *dynamoModel) Show(id string) string {
 	dynamodbattribute.UnmarshalMap(resp.Item, &obj)
 	j, _ := json.Marshal(obj)
 	return string(j)
+}
+
+func (d *dynamoModel) Destroy(id string) {
+	params := &dynamodb.DeleteItemInput{
+		TableName: aws.String(os.Getenv("DYNAMO_DATA_TABLE")),
+		Key: map[string]*dynamodb.AttributeValue{
+			"ID": {
+				N: aws.String(id),
+			},
+		},
+
+		ReturnConsumedCapacity:      aws.String("NONE"),
+		ReturnItemCollectionMetrics: aws.String("NONE"),
+		ReturnValues:                aws.String("NONE"),
+	}
+
+	_, err := d.svc.DeleteItem(params)
+	if err != nil {
+		panic(fmt.Sprintf("error:%#v", err))
+	}
 }

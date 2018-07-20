@@ -33,13 +33,28 @@ func (g *Gombda) POST(resource string, function func(events.APIGatewayProxyReque
 	})
 }
 
-func (g *Gombda) DELETE(resource string, function func()) {
+func (g *Gombda) DELETE(resource string, function func(events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)) {
+	g.routes = append(g.routes, &route{
+		method:   "DELETE",
+		resource: resource,
+		function: function,
+	})
 }
 
-func (g *Gombda) PATCH(resource string, function func()) {
+func (g *Gombda) PATCH(resource string, function func(events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)) {
+	g.routes = append(g.routes, &route{
+		method:   "PATCH",
+		resource: resource,
+		function: function,
+	})
 }
 
-func (g *Gombda) OPTIONS(resource string, function func()) {
+func (g *Gombda) OPTIONS(resource string, function func(events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)) {
+	g.routes = append(g.routes, &route{
+		method:   "OPTIONS",
+		resource: resource,
+		function: function,
+	})
 }
 
 func (g *Gombda) Start() (events.APIGatewayProxyResponse, error) {

@@ -23,6 +23,7 @@ func (h handler) Router(request events.APIGatewayProxyRequest) (events.APIGatewa
 	g := gombda.New(request)
 	g.POST("/func", h.Create)
 	g.GET("/func/{id}", h.Show)
+	g.DELETE("/func/{id}", h.Destroy)
 
 	return g.Start()
 }
@@ -48,6 +49,20 @@ func (h handler) Show(request events.APIGatewayProxyRequest) (events.APIGatewayP
 
 	return events.APIGatewayProxyResponse{
 		Body: fmt.Sprintf("%v", string(j)),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+		},
+		StatusCode: 200,
+	}, nil
+}
+
+func (h handler) Destroy(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	id := request.PathParameters["id"]
+	h.dynamoModel.Destroy(id)
+
+	return events.APIGatewayProxyResponse{
+		Body: fmt.Sprintf("Delete Success"),
 		Headers: map[string]string{
 			"Access-Control-Allow-Origin":      "*",
 			"Access-Control-Allow-Credentials": "true",
