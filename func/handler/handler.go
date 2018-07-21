@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/gaku3601/gombda"
 	"github.com/gaku3601/serverless-go/func/dynamo"
-	"github.com/gaku3601/serverless-go/func/gombda"
 	"github.com/tidwall/gjson"
 )
 

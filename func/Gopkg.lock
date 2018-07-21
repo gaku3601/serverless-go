@@ -50,6 +50,12 @@
   version = "v1.14.6"
 
 [[projects]]
+  name = "github.com/gaku3601/gombda"
+  packages = ["."]
+  revision = "34e39b18d3423dc8242dedcd81781f7a29ce34b9"
+  version = "0.0.1"
+
+[[projects]]
   name = "github.com/go-ini/ini"
   packages = ["."]
   revision = "06f5f3d67269ccec1fe5fe4134ba6e982984f7f5"
@@ -75,6 +81,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7d8fdb758904322a197e842745cf77c0fedcee3968f1b8cf96cb1215496f4d22"
+  inputs-digest = "73ea390d4c2cbbb13a204bc4e3666f7c21bce98d7a70863b8ba2980de78723f1"
   solver-name = "gps-cdcl"
   solver-version = 1
